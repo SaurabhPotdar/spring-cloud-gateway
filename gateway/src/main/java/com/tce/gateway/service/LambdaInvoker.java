@@ -14,24 +14,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class InvokeLambda {
+public class LambdaInvoker {
 
     private final BasicAWSCredentials credentials;
 
     private final Gson gson;
 
     @Autowired
-    public InvokeLambda(BasicAWSCredentials credentials, Gson gson) {
+    public LambdaInvoker(BasicAWSCredentials credentials, Gson gson) {
         this.credentials = credentials;
         this.gson = gson;
     }
 
-    public String call(String functionName, String payload) {
+    public String invoke(String functionName, Object payload) {
+        List<String> list = new ArrayList<>();
         InvokeRequest invokeRequest = new InvokeRequest()
                 .withFunctionName(functionName)
-                .withPayload(payload);
+                .withPayload(gson.toJson(payload));
         InvokeResult invokeResult;
 
         AWSLambda awsLambda = AWSLambdaClientBuilder.standard()
@@ -53,6 +56,7 @@ public class InvokeLambda {
 
         final LambdaErrorResponse errorResponse = gson.fromJson(responseString, LambdaErrorResponse.class);
         System.out.println("Error Response " + errorResponse);
+        //TODO Catch exception in PostFilter
         throw new RuntimeException(errorResponse.toString());
 
     }

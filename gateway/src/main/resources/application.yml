@@ -16,6 +16,9 @@ spring:
           uri: http://localhost:9092/
           predicates:
             - Path=/ms2/**
+          filters:
+            - name: PreFilter
+            - name: PostFilter
 ---
 aws:
   accessKey: AKIATJQ37Q2WRFTNG6US
