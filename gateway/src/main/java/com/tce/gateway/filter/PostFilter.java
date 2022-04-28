@@ -1,82 +1,42 @@
 package com.tce.gateway.filter;
 
-import com.tce.gateway.service.LambdaInvoker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.cloud.gateway.filter.factory.rewrite.ModifyRequestBodyGatewayFilterFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 @Component
 public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> {
 
-    private static final String functionName = "question";
+    private final ModifyRequestBodyGatewayFilterFactory factory;
 
-    @Autowired
-    private LambdaInvoker lambdaInvoker;
+    private final LambdaRewriteFunction lambdaRewriteFunction;
 
-    public PostFilter() {
+    public PostFilter(ModifyRequestBodyGatewayFilterFactory factory, LambdaRewriteFunction lambdaRewriteFunction) {
         super(Config.class);
+        this.factory = factory;
+        this.lambdaRewriteFunction = lambdaRewriteFunction;
     }
 
     @Override
     public GatewayFilter apply(Config config) {
-        System.out.println("inside SCGWPostFilter.apply method...");
         return (exchange, chain) -> {
+            System.out.println("inside SCGWPostFilter.apply method...");
+
             if (!exchange.getResponse().getStatusCode().is2xxSuccessful()) {
                 // Return the response as it is
                 return chain.filter(exchange);
             }
 
-            // Modify response if status is OK
-            try {
-                String requestBody = exchange.getAttribute("cachedRequestBodyObject");
-                System.out.println(requestBody);
-                return chain.filter(exchange);
-                //return chain.filter(exchange).then(Mono.from(modifyResponse(exchange)));
-            } catch (RuntimeException e) {
-                exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
-                return chain.filter(exchange.mutate()
-                        .request(exchange.getRequest().mutate().build())
-                        .build());
-            }
+            ModifyRequestBodyGatewayFilterFactory.Config cfg = new ModifyRequestBodyGatewayFilterFactory.Config();
+            cfg.setRewriteFunction(String.class, String.class, lambdaRewriteFunction);
+
+            GatewayFilter modifyBodyFilter = factory.apply(cfg);
+
+            return modifyBodyFilter.filter(exchange, ch -> Mono.empty())
+                    .then(chain.filter(exchange));
         };
-    }
-
-    private String yourMethodToModifyRequestBody(String originalRequestBody) {
-        System.out.println(originalRequestBody);
-        return originalRequestBody + "****";
-    }
-
-    public Mono<Void> modifyResponse(ServerWebExchange exchange) throws RuntimeException {
-        //https://stackoverflow.com/questions/48491098/how-to-add-some-data-in-body-of-response-for-cloud-api-gateway
-        ServerHttpResponse currentResponse = exchange.getResponse();
-
-        //TODO How to read response?
-        //TODO Read response and check if data or error
-        System.out.println(currentResponse);
-
-        //TODO Catch exception
-        String responseString = lambdaInvoker.invoke(functionName, currentResponse.toString());
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (ObjectOutputStream oos = new ObjectOutputStream(bos)) {
-            oos.writeObject(responseString);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        byte[] bytes = bos.toByteArray();
-        DataBuffer buffer = exchange.getResponse().bufferFactory().wrap(bytes);
-        return exchange.getResponse().writeWith(Flux.just(buffer));
     }
 
     public static class Config {
