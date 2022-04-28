@@ -9,12 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 class GatewayApplicationTests {
 
 
-	@Autowired
-	BasicAWSCredentials basicAWSCredentials;
+    @Autowired
+    BasicAWSCredentials basicAWSCredentials;
 
-	@Test
-	void contextLoads() {
-		System.out.println(basicAWSCredentials.getAWSAccessKeyId());
-	}
+    @Test
+    void contextLoads() {
+        System.out.println(basicAWSCredentials.getAWSAccessKeyId());
+    }
 
 }

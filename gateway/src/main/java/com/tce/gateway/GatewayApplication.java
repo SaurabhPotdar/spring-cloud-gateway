@@ -10,18 +10,18 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class GatewayApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GatewayApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
 
-	@Bean
-	public BasicAWSCredentials getBasicAWSCredentials(@Value("${aws.accessKey}") String accessKey, @Value("${aws.secretKey}") String secretKey) {
-		return new BasicAWSCredentials(accessKey, secretKey);
-	}
+    @Bean
+    public BasicAWSCredentials getBasicAWSCredentials(@Value("${aws.accessKey}") String accessKey, @Value("${aws.secretKey}") String secretKey) {
+        return new BasicAWSCredentials(accessKey, secretKey);
+    }
 
-	@Bean
-	public Gson getGson() {
-		return new Gson();
-	}
+    @Bean
+    public Gson getGson() {
+        return new Gson();
+    }
 
 }

@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Microservice1Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Microservice1Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Microservice1Application.class, args);
+    }
 
-	@Bean
-	public Gson getGson() {
-		return new Gson();
-	}
+    @Bean
+    public Gson getGson() {
+        return new Gson();
+    }
 
 }

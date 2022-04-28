@@ -17,7 +17,7 @@ public class PreFilter extends AbstractGatewayFilterFactory<PreFilter.Config> {
         System.out.println("inside SCGWPreFilter.apply method");
 
         return (exchange, chain) -> {
-            ServerHttpRequest request = exchange.getRequest().mutate().header("scgw-pre-header", Math.random()*10+"").build();
+            ServerHttpRequest request = exchange.getRequest().mutate().header("scgw-pre-header", Math.random() * 10 + "").build();
             return chain.filter(exchange.mutate().request(request).build());
         };
     }
