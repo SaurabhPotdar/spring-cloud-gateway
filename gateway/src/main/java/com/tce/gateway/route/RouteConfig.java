@@ -6,17 +6,19 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Configuration
-public class RouteConfig implements RewriteFunction<String, String> {
+public class RouteConfig {
 
     @Bean
     public RouteLocator myRouteSavingRequestBody(RouteLocatorBuilder builder) {
         //https://stackoverflow.com/a/64535228/12021132
+        //https://github.com/spring-cloud/spring-cloud-gateway/issues/747
         return builder.routes()
                 .route("my-route-id",
                         p -> p.path("/ms2/**") //your own path filter
@@ -24,22 +26,22 @@ public class RouteConfig implements RewriteFunction<String, String> {
                                         .modifyResponseBody(String.class, String.class,
                                                 (webExchange, originalBody) -> {
                                                     if (originalBody != null) {
+                                                        String modifiedResponseBody = modifyResponseBody(webExchange, originalBody);
                                                         webExchange.getAttributes().put("cachedResponseBodyObject", originalBody);
                                                         //Can get body here
-                                                        return Mono.just(originalBody);
+                                                        return Mono.just(modifiedResponseBody);
                                                     } else {
                                                         return Mono.empty();
                                                     }
                                                 })
-                                        .modifyResponseBody(String.class, String.class, new RouteConfig())
                                 )
                                 .uri("http://localhost:9092/")
                 )
                 .build();
     }
 
-    @Override
-    public Publisher<String> apply(ServerWebExchange serverWebExchange, String s) {
-        return null;
+    public String modifyResponseBody(ServerWebExchange serverWebExchange, String responseBody) {
+        serverWebExchange.getResponse().setStatusCode(HttpStatus.CREATED);
+        return "--" + responseBody + "--";
     }
 }
