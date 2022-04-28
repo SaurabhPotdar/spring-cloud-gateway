@@ -36,19 +36,17 @@ public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> 
     public GatewayFilter apply(Config config) {
         System.out.println("inside SCGWPostFilter.apply method...");
         return (exchange, chain) -> {
-//            if (exchange.getResponse().getStatusCode().is2xxSuccessful()) {
-//                return chain.filter(exchange);
-//            }
+            if (!exchange.getResponse().getStatusCode().is2xxSuccessful()) {
+                // Return the response as it is
+                return chain.filter(exchange);
+            }
+
             // Modify response if status is OK
             try {
+                String requestBody = exchange.getAttribute("cachedRequestBodyObject");
+                System.out.println(requestBody);
+                return chain.filter(exchange);
                 //return chain.filter(exchange).then(Mono.from(modifyResponse(exchange)));
-                ModifyRequestBodyGatewayFilterFactory.Config modifyRequestConfig = new ModifyRequestBodyGatewayFilterFactory.Config()
-                        .setContentType(ContentType.APPLICATION_JSON.getMimeType())
-                        .setRewriteFunction(String.class, String.class, (exchange1, originalRequestBody) -> {
-                            String modifiedRequestBody = yourMethodToModifyRequestBody(originalRequestBody);
-                            return Mono.just(modifiedRequestBody);
-                        });
-                return new ModifyRequestBodyGatewayFilterFactory().apply(modifyRequestConfig).filter(exchange, chain);
             } catch (RuntimeException e) {
                 exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);
                 return chain.filter(exchange.mutate()
