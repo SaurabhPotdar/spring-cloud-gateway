@@ -7,6 +7,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -25,8 +26,10 @@ public class RouteConfig {
     public RouteLocator myRouteSavingRequestBody(RouteLocatorBuilder builder) {
         //https://stackoverflow.com/a/64535228/12021132
         //https://github.com/spring-cloud/spring-cloud-gateway/issues/747
+        //https://javamana.com/2021/09/20210910235604203Z.html  //https://github.com/zq2599/blog_demos/tree/master/spring-cloud-tutorials/gateway-change-body
         return builder.routes().route("my-route-id", p -> p.path("/ms2/**")
-                .filters(f -> f.modifyResponseBody(String.class, String.class, (webExchange, originalBody) -> {
+                .filters(f -> f.modifyResponseBody(String.class, String.class, MediaType.APPLICATION_JSON_VALUE,
+                        (webExchange, originalBody) -> {
                             if (originalBody != null) {
                                 String modifiedResponseBody = modifyResponseBody(webExchange, originalBody);
                                 webExchange.getAttributes().put("cachedResponseBodyObject", originalBody);
@@ -49,8 +52,7 @@ public class RouteConfig {
 
         try {
             return lambdaInvoker.invoke(functionName, responseBody);
-        }
-        catch(RuntimeException e) {
+        } catch (RuntimeException e) {
             response.setStatusCode(HttpStatus.BAD_REQUEST);
             return e.getMessage();
         }
