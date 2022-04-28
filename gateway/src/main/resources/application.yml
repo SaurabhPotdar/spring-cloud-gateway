@@ -5,14 +5,18 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: nt-ms1
+        - id: ms1
           uri: http://localhost:9091/
           predicates:
             - Path=/ms1/**
           filters:
             - name: PreFilter
             - name: PostFilter
-        - id: nt-ms2
+        - id: ms2
           uri: http://localhost:9092/
           predicates:
             - Path=/ms2/**
+---
+aws:
+  accessKey: AKIATJQ37Q2WRFTNG6US
+  secretKey: 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
