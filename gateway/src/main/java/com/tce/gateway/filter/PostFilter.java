@@ -66,7 +66,7 @@ public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> 
         System.out.println(currentResponse);
 
         //TODO Catch exception
-        String responseString = lambdaInvoker.invoke(functionName, currentResponse);
+        String responseString = lambdaInvoker.invoke(functionName, currentResponse.toString());
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try (ObjectOutputStream oos = new ObjectOutputStream(bos)) {

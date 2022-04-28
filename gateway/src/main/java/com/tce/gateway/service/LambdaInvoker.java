@@ -30,7 +30,7 @@ public class LambdaInvoker {
         this.gson = gson;
     }
 
-    public String invoke(String functionName, Object payload) {
+    public String invoke(String functionName, String payload) {
         List<String> list = new ArrayList<>();
         InvokeRequest invokeRequest = new InvokeRequest()
                 .withFunctionName(functionName)
