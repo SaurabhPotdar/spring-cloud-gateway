@@ -29,6 +29,7 @@ public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> 
                 return chain.filter(exchange);
             }
 
+            //https://stackoverflow.com/questions/68741402/how-to-set-request-body-in-gatewayfilter-with-spring-cloud-gateway
             ModifyRequestBodyGatewayFilterFactory.Config cfg = new ModifyRequestBodyGatewayFilterFactory.Config();
             cfg.setRewriteFunction(String.class, String.class, lambdaRewriteFunction);
 

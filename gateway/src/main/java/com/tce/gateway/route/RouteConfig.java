@@ -27,8 +27,7 @@ public class RouteConfig {
         //https://stackoverflow.com/a/64535228/12021132
         //https://github.com/spring-cloud/spring-cloud-gateway/issues/747
         //https://javamana.com/2021/09/20210910235604203Z.html  //https://github.com/zq2599/blog_demos/tree/master/spring-cloud-tutorials/gateway-change-body
-        //TODO https://stackoverflow.com/questions/68741402/how-to-set-request-body-in-gatewayfilter-with-spring-cloud-gateway
-        return builder.routes().route("my-route-id", p -> p.path("/ms2/**")
+        return builder.routes().route("my-route-id", p -> p.path("/ms1/**")
                 .filters(f -> f.modifyResponseBody(String.class, String.class, MediaType.APPLICATION_JSON_VALUE,
                         (webExchange, originalBody) -> {
                             if (originalBody != null) {
@@ -41,7 +40,7 @@ public class RouteConfig {
                             }
                         })
                 )
-                .uri("http://localhost:9092/")).build();
+                .uri("http://localhost:9091/")).build();
     }
 
     public String modifyResponseBody(ServerWebExchange serverWebExchange, String responseBody) {
