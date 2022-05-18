@@ -1,6 +1,7 @@
 package com.tce.gateway.filter;
 
 import com.tce.gateway.service.LambdaInvoker;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.factory.rewrite.RewriteFunction;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 @Component
+@Slf4j
 public class LambdaRewriteFunction implements RewriteFunction<String, String> {
 
     private static final String functionName = "question";
@@ -29,6 +31,7 @@ public class LambdaRewriteFunction implements RewriteFunction<String, String> {
 
         try {
             //Getting response body as null, will have to add cache in RouteConfig
+            log.info("Response {}", responseBody);
             return Mono.just(lambdaInvoker.invoke(functionName, responseBody));
         } catch (RuntimeException e) {
             response.setStatusCode(HttpStatus.BAD_REQUEST);
