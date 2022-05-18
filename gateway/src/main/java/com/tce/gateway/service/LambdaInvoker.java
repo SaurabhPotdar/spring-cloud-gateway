@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class LambdaInvoker {
@@ -31,7 +29,6 @@ public class LambdaInvoker {
     }
 
     public String invoke(String functionName, String payload) {
-        List<String> list = new ArrayList<>();
         InvokeRequest invokeRequest = new InvokeRequest()
                 .withFunctionName(functionName)
                 .withPayload(gson.toJson(payload));

@@ -6,6 +6,8 @@ import org.springframework.cloud.gateway.filter.factory.rewrite.ModifyRequestBod
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Component
 public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> {
 
@@ -24,7 +26,7 @@ public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> 
         return (exchange, chain) -> {
             System.out.println("inside SCGWPostFilter.apply method...");
 
-            if (!exchange.getResponse().getStatusCode().is2xxSuccessful()) {
+            if (!Objects.requireNonNull(exchange.getResponse().getStatusCode()).is2xxSuccessful()) {
                 // Return the response as it is
                 return chain.filter(exchange);
             }
