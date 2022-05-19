@@ -10,8 +10,8 @@ spring:
           predicates:
             - Path=/ms1/**
           filters:
-            - name: PreFilterV2
-            #- name: PostFilter
+            - name: Filter_1
+            - name: Filter_2
         - id: ms2
           uri: http://localhost:9092/
           predicates:
