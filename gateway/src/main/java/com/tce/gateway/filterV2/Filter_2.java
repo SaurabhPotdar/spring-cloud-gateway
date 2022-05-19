@@ -33,8 +33,8 @@ public class Filter_2 extends AbstractGatewayFilterFactory<Filter_2.Config> {
                 assert requestBody != null;
                 String response = lambdaService.invoke(FUNCTION_NAME, requestBody);
                 //exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
-                //Add json as output type
-                //Doesn't go to the controller
+                exchange.getResponse().getHeaders().add("Content-Type", "application/json");
+                //Doesn't go to the controller if we just don't use chain.filter
                 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes())));
             } catch (Exception e) {
                 log.error("Error", e);
