@@ -1,4 +1,4 @@
-package com.tce.gateway.filterV2;
+package com.tce.gateway.filter;
 
 import com.tce.gateway.service.LambdaService;
 import lombok.extern.slf4j.Slf4j;
@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import static com.tce.gateway.filterV2.Filter_1.PRINT_TEST_REQUEST_BODY;
+import static com.tce.gateway.filter.Filter_1.PRINT_TEST_REQUEST_BODY;
 
 @Component
 @Slf4j
