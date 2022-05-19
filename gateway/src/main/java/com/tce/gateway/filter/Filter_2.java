@@ -11,6 +11,9 @@ import reactor.core.publisher.Mono;
 
 import static com.tce.gateway.filter.Filter_1.PRINT_TEST_REQUEST_BODY;
 
+/**
+ * Modify response body
+ */
 @Component
 @Slf4j
 public class Filter_2 extends AbstractGatewayFilterFactory<Filter_2.Config> {

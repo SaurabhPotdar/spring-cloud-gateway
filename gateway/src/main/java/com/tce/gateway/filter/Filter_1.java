@@ -17,7 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Read request body and store it to
+ * Read request body and store it to attributes -> Can be accessed in Filter2
+ * We can also modify request body
  */
 @Component
 @Slf4j
@@ -33,7 +34,7 @@ public class Filter_1 extends AbstractGatewayFilterFactory<Filter_1.Config> {
     public GatewayFilter apply(Filter_1.Config config) {
         return (exchange, chain) -> DataBufferUtils.join(exchange.getRequest().getBody()).flatMap(dataBuffer -> {
             try {
-                final ServerHttpRequest mutatedHttpRequest = getServerHttpRequest(exchange, dataBuffer);
+                final ServerHttpRequest mutatedHttpRequest = getServerHttpRequest(exchange, dataBuffer);  //Modify request
                 return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());
             } catch (Exception e) {
                 log.error("Error", e);
@@ -42,6 +43,9 @@ public class Filter_1 extends AbstractGatewayFilterFactory<Filter_1.Config> {
         });
     }
 
+    /**
+     * Modify request body
+     */
     private ServerHttpRequest getServerHttpRequest(final ServerWebExchange exchange, final DataBuffer dataBuffer) {
         DataBufferUtils.retain(dataBuffer);
         final Flux<DataBuffer> cachedFlux = Flux.defer(() -> Flux.just(dataBuffer.slice(0, dataBuffer.readableByteCount())));
@@ -51,8 +55,10 @@ public class Filter_1 extends AbstractGatewayFilterFactory<Filter_1.Config> {
         return new ServerHttpRequestDecorator(exchange.getRequest()) {
             @Override
             public Flux<DataBuffer> getBody() {
-                return Flux.just(requestBody).
-                        map(s -> new DefaultDataBufferFactory().wrap(requestBody.getBytes(StandardCharsets.UTF_8)));
+                //Modify request body
+                String modifiedRequestBody = requestBody;
+                return Flux.just(modifiedRequestBody).
+                        map(s -> new DefaultDataBufferFactory().wrap(modifiedRequestBody.getBytes(StandardCharsets.UTF_8)));
             }
         };
     }
