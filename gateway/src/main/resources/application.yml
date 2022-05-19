@@ -17,8 +17,8 @@ spring:
           predicates:
             - Path=/ms2/**
           filters:
-            - name: PreFilter
-            - name: PostFilter
+            #- name: PreFilter
+            - name: PostFilterV2
 ---
 aws:
   accessKey: AKIATJQ37Q2WRFTNG6US

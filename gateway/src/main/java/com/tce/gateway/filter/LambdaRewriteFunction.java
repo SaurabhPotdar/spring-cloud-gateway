@@ -1,6 +1,6 @@
 package com.tce.gateway.filter;
 
-import com.tce.gateway.service.LambdaInvoker;
+import com.tce.gateway.service.LambdaService;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class LambdaRewriteFunction implements RewriteFunction<String, String> {
     private static final String functionName = "question";
 
     @Autowired
-    private LambdaInvoker lambdaInvoker;
+    private LambdaService lambdaService;
 
     @Override
     public Publisher<String> apply(ServerWebExchange serverWebExchange, String responseBody) {
@@ -32,7 +32,8 @@ public class LambdaRewriteFunction implements RewriteFunction<String, String> {
         try {
             //Getting response body as null, will have to add cache in RouteConfig
             log.info("Response {}", responseBody);
-            return Mono.just(lambdaInvoker.invoke(functionName, responseBody));
+            return Mono.just(responseBody);
+            //return Mono.just(lambdaService.invoke(functionName, responseBody));
         } catch (RuntimeException e) {
             response.setStatusCode(HttpStatus.BAD_REQUEST);
             return Mono.just(e.getMessage());

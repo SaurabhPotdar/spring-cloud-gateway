@@ -10,20 +10,22 @@ import com.amazonaws.services.lambda.model.InvokeResult;
 import com.amazonaws.util.StringUtils;
 import com.google.gson.Gson;
 import com.tce.gateway.dto.LambdaErrorResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class LambdaInvoker {
+@Slf4j
+public class LambdaService {
 
     private final BasicAWSCredentials credentials;
 
     private final Gson gson;
 
     @Autowired
-    public LambdaInvoker(BasicAWSCredentials credentials, Gson gson) {
+    public LambdaService(BasicAWSCredentials credentials, Gson gson) {
         this.credentials = credentials;
         this.gson = gson;
     }
@@ -52,10 +54,8 @@ public class LambdaInvoker {
         }
 
         final LambdaErrorResponse errorResponse = gson.fromJson(responseString, LambdaErrorResponse.class);
-        System.out.println("Error Response " + errorResponse);
-        //TODO Catch exception in PostFilter
-        throw new RuntimeException(errorResponse.toString());
-
+        log.info("Error Response " + errorResponse);
+        throw new RuntimeException(errorResponse.getErrorMessage());
     }
 
 }
