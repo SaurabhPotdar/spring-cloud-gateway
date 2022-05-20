@@ -16,6 +16,9 @@ return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferF
 ```
 ```chain.filter``` will pass the request to the Controller
 
+### Filter 3 -> uses RequestDecorator class
+Read request body and return response
+
 ### _TODO_ Create global filter for exception handling
 
 ## Creating feign client

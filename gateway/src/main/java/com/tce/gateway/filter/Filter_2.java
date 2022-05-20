@@ -32,7 +32,6 @@ public class Filter_2 extends AbstractGatewayFilterFactory<Filter_2.Config> {
         return (exchange, chain) -> DataBufferUtils.join(exchange.getRequest().getBody()).flatMap(dataBuffer -> {
             try {
                 String requestBody = exchange.getAttribute(PRINT_TEST_REQUEST_BODY);
-                assert requestBody != null;
                 String response = lambdaService.invoke(FUNCTION_NAME, requestBody);
                 //exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
                 exchange.getResponse().getHeaders().add("Content-Type", "application/json");
