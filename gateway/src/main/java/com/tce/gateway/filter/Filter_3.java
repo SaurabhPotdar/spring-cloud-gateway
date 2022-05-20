@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -29,16 +30,17 @@ public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
                 //Read request body
                 RequestDecorator requestDecorator = new RequestDecorator(exchange, dataBuffer);
                 String requestBody = requestDecorator.getRequestBody();
-                log.info(requestBody);
 
                 //Modify response
                 String response = lambdaService.invoke(FUNCTION_NAME, requestBody);
-                //exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
                 exchange.getResponse().getHeaders().add("Content-Type", "application/json");
                 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes())));
             } catch (Exception e) {
-                log.error("Error", e);
-                throw new RuntimeException(e);
+                log.error("Error in filter 3", e);
+                exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
+                return exchange.getResponse().writeWith(Mono.empty());
+                //TODO throw exception and use a global filter to handle it
+                //throw new RuntimeException(e);
             }
         });
     }

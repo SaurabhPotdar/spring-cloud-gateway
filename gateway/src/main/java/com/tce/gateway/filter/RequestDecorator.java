@@ -24,9 +24,7 @@ public class RequestDecorator extends ServerHttpRequestDecorator {
         DataBufferUtils.retain(dataBuffer);
         final Flux<DataBuffer> cachedFlux = Flux.defer(() -> Flux.just(dataBuffer.slice(0, dataBuffer.readableByteCount())));
         requestBody = toRaw(cachedFlux);
-        if(log.isTraceEnabled()) {
-            log.info("requestBody {}", requestBody);
-        }
+        log.info("requestBody {}", requestBody);
     }
 
     @Override
