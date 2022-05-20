@@ -31,7 +31,7 @@ public class SimpleController {
 
     @GetMapping(value = "/get")
     public Flux<Question> getData(ServerHttpRequest request, ServerHttpResponse response) {
-        System.out.println("Inside MS1 getData method");
+        System.out.println("Inside MS1 /get method");
         HttpHeaders headers = request.getHeaders();
 
         headers.forEach((k, v) -> {
@@ -43,7 +43,7 @@ public class SimpleController {
 
     @GetMapping(value = "/get2", produces = "application/json")
     public ResponseEntity<?> getData2(@RequestBody String jsonString) {
-        log.info("Inside MS1 getData method");
+        log.info("Inside MS1 /get2 method");
         log.info("Request body inside MS1 {}", jsonString);
         return ResponseEntity.ok(jsonString);
     }
