@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 @FeignClient("gateway-service")
 public interface GatewayFeign {
 
-    //MS2 does not have an implementation /get2 url, but it gets intercepted by filter and filter returns response
+    //service-two does not have an implementation /get2 url, but it gets intercepted by filter and filter returns response
     @GetMapping(value = "/ms2/get2")
     Mono<String> getData();
 
