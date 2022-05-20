@@ -47,4 +47,5 @@ public class Filter_2 extends AbstractGatewayFilterFactory<Filter_2.Config> {
 
     public static class Config {
     }
+
 }

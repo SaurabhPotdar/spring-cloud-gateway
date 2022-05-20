@@ -1,12 +1,18 @@
 server:
   port: 9090
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
 ---
 spring:
+  application:
+    name: gateway-service
   cloud:
     gateway:
       routes:
         - id: ms1
-          uri: http://localhost:9091/
+          uri: lb://FIRST-SERVICE
           predicates:
             - Path=/ms1/**
           filters:

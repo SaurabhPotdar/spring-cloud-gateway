@@ -1,2 +1,9 @@
 server:
-  port: 9092
+  port: ${random.int(5000,5100)}
+spring:
+  application:
+    name: second-service
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka
