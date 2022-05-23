@@ -3,9 +3,10 @@
 ## [Filters](https://medium.com/@niral22/spring-cloud-gateway-tutorial-5311ddd59816)
 
 ### PreFilter -> Filter_1
-If we return request -> Then PreFilter
+If we return filter chain -> Then PreFilter\
+```chain.filter``` will pass the request to the Controller
 ```
-return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());
+return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());  //Passes request to controller
 ```
 
 ### PostFilter -> Filter_2
@@ -14,7 +15,9 @@ If we return response -> Then PostFilter
 //Skip Controller and directly return response
 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes())));
 ```
-```chain.filter``` will pass the request to the Controller
+```
+chain.filter(exchange).**then**(Mono.fromRunnable(() -> exchange.getResponse().getHeaders().remove(config.getName())));
+```
 
 ### Filter 3 -> uses RequestDecorator class
 Read request body and return response
