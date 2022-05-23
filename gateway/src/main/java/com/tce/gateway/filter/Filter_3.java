@@ -1,12 +1,14 @@
 package com.tce.gateway.filter;
 
 import com.google.gson.Gson;
+import com.tce.gateway.BusinessException;
 import com.tce.gateway.dto.LambdaVo;
 import com.tce.gateway.service.LambdaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
+@Order(0)
 public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
 
     @Autowired
@@ -43,11 +46,7 @@ public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
                 exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
                 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes(StandardCharsets.UTF_8))));
             } catch (Exception e) {
-                log.error("Error in filter 3", e);
-                exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
-                return exchange.getResponse().writeWith(Mono.empty());
-                //TODO throw exception and use a global filter to handle it
-                //throw new RuntimeException(e);
+                throw new BusinessException(e.getMessage());
             }
         });
     }

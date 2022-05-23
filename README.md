@@ -19,7 +19,10 @@ return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferF
 ### Filter 3 -> uses RequestDecorator class
 Read request body and return response
 
-### _TODO_ Create global filter for exception handling
+### Global Filter -> used for exception handling
+```@Order()``` can be used for ordering filters\
+...,-2,-1,0,1,2,...\
+In our example Filter_3 has ```@Order(0)``` and GlobalFilter has ```@Order(1)```
 
 ## Creating feign client
 GatewayFeign in service-one calls service-two via **api gateway** ```@FeignClient("gateway-service")```. service-two does not have an implementation
