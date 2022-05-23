@@ -7,8 +7,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
@@ -33,8 +36,8 @@ public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
 
                 //Modify response
                 String response = lambdaService.invoke(FUNCTION_NAME, requestBody);
-                exchange.getResponse().getHeaders().add("Content-Type", "application/json");
-                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes())));
+                exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes(StandardCharsets.UTF_8))));
             } catch (Exception e) {
                 log.error("Error in filter 3", e);
                 exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);  //set status code
