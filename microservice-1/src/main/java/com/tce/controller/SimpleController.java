@@ -1,6 +1,7 @@
 package com.tce.controller;
 
 import com.google.gson.Gson;
+import com.tce.dto.LambdaVo;
 import com.tce.dto.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class SimpleController {
     }
 
     @GetMapping(value = "/get2", produces = "application/json")
-    public ResponseEntity<?> getData2(@RequestBody String jsonString) {
+    public ResponseEntity<?> getData2(@RequestBody LambdaVo lambdaVo) {
         log.info("Inside MS1 /get2 method");
-        log.info("Request body inside MS1 {}", jsonString);
-        return ResponseEntity.ok(jsonString);
+        log.info("Request body inside MS1 {}", lambdaVo);
+        return ResponseEntity.ok("From MS1 /get2");
     }
 
 //    @GetMapping(value = "/get2", produces = "application/json")

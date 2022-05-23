@@ -32,8 +32,12 @@ public class LambdaService {
 
     public String invoke(String functionName, String payload) {
         InvokeRequest invokeRequest = new InvokeRequest()
-                .withFunctionName(functionName)
-                .withPayload(gson.toJson(payload));
+                .withFunctionName(functionName);
+
+        if (!StringUtils.isNullOrEmpty(payload)) {
+            invokeRequest.setPayload(payload);
+        }
+
         InvokeResult invokeResult;
 
         AWSLambda awsLambda = AWSLambdaClientBuilder.standard()

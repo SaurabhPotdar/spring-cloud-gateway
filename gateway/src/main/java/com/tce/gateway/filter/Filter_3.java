@@ -1,5 +1,7 @@
 package com.tce.gateway.filter;
 
+import com.google.gson.Gson;
+import com.tce.gateway.dto.LambdaVo;
 import com.tce.gateway.service.LambdaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,11 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
 
-    private static final String FUNCTION_NAME = "question";
-
     @Autowired
     LambdaService lambdaService;
+
+    @Autowired
+    Gson gson;
 
     public Filter_3() {
         super(Filter_3.Config.class);
@@ -33,9 +36,10 @@ public class Filter_3 extends AbstractGatewayFilterFactory<Filter_3.Config>  {
                 //Read request body
                 RequestDecorator requestDecorator = new RequestDecorator(exchange, dataBuffer);
                 String requestBody = requestDecorator.getRequestBody();
+                LambdaVo lambdaVo = gson.fromJson(requestBody, LambdaVo.class);
 
                 //Modify response
-                String response = lambdaService.invoke(FUNCTION_NAME, requestBody);
+                String response = lambdaService.invoke(lambdaVo.getFunctionName(), lambdaVo.getJsonPayload());
                 exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
                 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes(StandardCharsets.UTF_8))));
             } catch (Exception e) {
