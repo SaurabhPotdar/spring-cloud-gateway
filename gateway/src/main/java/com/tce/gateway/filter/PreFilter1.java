@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.tce.gateway.constants.Constants.LAMBDA_VO;
+
 /**
  * Modify requestBody and send it as response
  * Filter2 will read this response as requestBody
@@ -38,16 +40,14 @@ public class PreFilter1 extends AbstractGatewayFilterFactory<PreFilter1.Config> 
                 final String requestBody = requestDecorator.getRequestBody();
                 final LambdaVo lambdaVo = gson.fromJson(requestBody, LambdaVo.class);
                 log.info("RequestBody in PreFilter1 {}", lambdaVo);
-
-                lambdaVo.setFunctionName(FUNCTION_NAME);
-                final String response = gson.toJson(lambdaVo);
-                exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes(StandardCharsets.UTF_8))));
+                exchange.getAttributes().put(LAMBDA_VO, lambdaVo);
                 return chain.filter(exchange);
             } catch (Exception e) {
                 log.error("Error", e);
                 throw new RuntimeException(e);
             }
         });
+
     }
 
     public static class Config {
