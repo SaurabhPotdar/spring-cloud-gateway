@@ -3,7 +3,7 @@
 ## [Filters](https://medium.com/@niral22/spring-cloud-gateway-tutorial-5311ddd59816)
 
 ### PreFilter -> Filter_1
-If we return request -> Then it will fo to next PreFilter or Controller
+If we return request -> Then it will go to next PreFilter or Controller
 ```
 return chain.filter(exchange);
 return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());
