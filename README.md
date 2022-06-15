@@ -3,21 +3,28 @@
 ## [Filters](https://medium.com/@niral22/spring-cloud-gateway-tutorial-5311ddd59816)
 
 ### PreFilter -> Filter_1
-If we return request -> Then PreFilter
+If we return request -> Then it will fo to next PreFilter or Controller
 ```
+return chain.filter(exchange);
 return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());
 ```
 
-### PostFilter -> Filter_2
-If we return response -> Then PostFilter
+### Filter_2
+Skip Controller and directly return response -> exchange.getResponse().writeWith()
 ```
-//Skip Controller and directly return response
 return exchange.getResponse().writeWith(Mono.just(exchange.getResponse().bufferFactory().wrap(response.getBytes())));
 ```
 ```chain.filter``` will pass the request to the Controller
 
 ### Filter 3 -> uses RequestDecorator class
 Read request body and return response
+
+### PostFilter -> Return response once chain.filter has completed using then()
+```
+return chain.filter(exchange).**then**(Mono.fromRunnable(() -> {
+  logger.info("Global Post Filter executed");
+}));
+```
 
 ### Global Filter -> used for exception handling
 ```@Order()``` can be used for ordering filters\
