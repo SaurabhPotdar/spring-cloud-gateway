@@ -1,163 +1,163 @@
 {
-	"info": {
-		"_postman_id": "fcc5369a-7d16-4caf-9918-f882cc5a730e",
-		"name": "Question",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19852759"
-	},
-	"item": [
-		{
-			"name": "QuestionEC2",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "ec2-3-110-41-52.ap-south-1.compute.amazonaws.com:8080/getQuestions/question",
-					"host": [
-						"ec2-3-110-41-52",
-						"ap-south-1",
-						"compute",
-						"amazonaws",
-						"com"
-					],
-					"port": "8080",
-					"path": [
-						"getQuestions",
-						"question"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "MS1",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9091/ms1",
-					"host": [
-						"localhost"
-					],
-					"port": "9091",
-					"path": [
-						"ms1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "MS2",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9092/ms2/get",
-					"host": [
-						"localhost"
-					],
-					"port": "9092",
-					"path": [
-						"ms2",
-						"get"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gateway MS1",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"questionId\":\"1\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:9090/ms1/get2",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"ms1",
-						"get2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gateway Feign",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"questionId\":\"1\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:9090/feign/test",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"feign",
-						"test"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Gateway MS2",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"questionId\":\"1\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:9090/ms2/get",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"ms2",
-						"get"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "fcc5369a-7d16-4caf-9918-f882cc5a730e",
+    "name": "Question",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19852759"
+  },
+  "item": [
+    {
+      "name": "QuestionEC2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "ec2-3-110-41-52.ap-south-1.compute.amazonaws.com:8080/getQuestions/question",
+          "host": [
+            "ec2-3-110-41-52",
+            "ap-south-1",
+            "compute",
+            "amazonaws",
+            "com"
+          ],
+          "port": "8080",
+          "path": [
+            "getQuestions",
+            "question"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "MS1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:9091/ms1",
+          "host": [
+            "localhost"
+          ],
+          "port": "9091",
+          "path": [
+            "ms1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "MS2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:9092/ms2/get",
+          "host": [
+            "localhost"
+          ],
+          "port": "9092",
+          "path": [
+            "ms2",
+            "get"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gateway MS1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"questionId\":\"1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:9090/ms1/get2",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "ms1",
+            "get2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gateway Feign",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"questionId\":\"1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:9090/feign/test",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "feign",
+            "test"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gateway MS2",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"questionId\":\"1\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:9090/ms2/get",
+          "host": [
+            "localhost"
+          ],
+          "port": "9090",
+          "path": [
+            "ms2",
+            "get"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }

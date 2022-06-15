@@ -16,10 +16,9 @@ public class SimpleController {
     public Mono<String> getData(ServerHttpRequest request, ServerHttpResponse response) {
         System.out.println("Inside MS2 getData method");
         HttpHeaders headers = request.getHeaders();
-        headers.forEach((k,v)->{
+        headers.forEach((k, v) -> {
             System.out.println(k + " : " + v);
         });
-
         return Mono.just("Hello from Reactive SC-MS2 getData method!!");
     }
 }

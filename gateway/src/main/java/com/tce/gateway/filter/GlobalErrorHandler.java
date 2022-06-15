@@ -23,15 +23,14 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable throwable) {
-        log.error("Global {}",throwable.getMessage());
+        log.error("Global {}", throwable.getMessage());
         final DataBufferFactory bufferFactory = exchange.getResponse().bufferFactory();
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         if (throwable instanceof ResponseStatusException) {
             final ResponseStatusException responseStatusException = (ResponseStatusException) throwable;
             exchange.getResponse().setStatusCode(responseStatusException.getStatus());
             return exchange.getResponse().writeWith(Mono.empty());
-        }
-        else if (throwable instanceof BusinessException) {
+        } else if (throwable instanceof BusinessException) {
             final BusinessException businessException = (BusinessException) throwable;
             final DataBuffer dataBuffer = bufferFactory.wrap(businessException.getMessage().getBytes(StandardCharsets.UTF_8));
             exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);

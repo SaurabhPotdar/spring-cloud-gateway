@@ -16,19 +16,17 @@ spring:
           predicates:
             - Path=/ms1/**
           filters:
-            - name: Filter_3
-            #- name: Filter_2
-        - id: ms1-feign-test
-          uri: lb://FIRST-SERVICE
-          predicates:
-            - Path=/feign/**
+            - PreFilter1
+            - PreFilter2
+            - SinkFilter
         - id: ms2
-          uri: http://localhost:9092/
+          uri: lb://SECOND-SERVICE
           predicates:
             - Path=/ms2/**
           filters:
-            - name: Filter_1
-            - name: Filter_2
+            - PreFilter1
+            - PreFilter2
+            - PostFilter
 ---
 aws:
   accessKey: AKIATJQ37Q2WRFTNG6US

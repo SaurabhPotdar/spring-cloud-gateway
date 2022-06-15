@@ -9,10 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LambdaVo {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String functionName;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String jsonPayload;
 
 }
