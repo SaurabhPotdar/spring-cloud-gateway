@@ -11,7 +11,8 @@ return chain.filter(exchange);
 return chain.filter(exchange.mutate().request(mutatedHttpRequest).build());
 ```
 **_We can only use this ```DataBufferUtils.join(exchange.getRequest().getBody())``` in PreFilter1. If we use in both PreFilter1,2 then only PreFilter1 will run.
-So read request body in the first filter and add it to ```exchange.getAttributes()``` to read in the next filter._**
+So read request body in the first filter and add it to ```exchange.getAttributes()``` to read in the next filter._**\
+Basically we can only use ```DataBufferUtils.join(exchange.getRequest().getBody())``` once in the chain.
 
 ### Filter_2
 
