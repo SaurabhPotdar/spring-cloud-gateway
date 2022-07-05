@@ -49,3 +49,11 @@ does not have an implementation
 for /get2 url, but it gets intercepted by filter and filter returns response.
 
 For testing on Postman call ```localhost:9090/ms2/get2```
+
+## Void return type
+```
+return jobService.markJobAsComplete(exchange)  //Webclient call
+                        .map(jobId -> exchange)
+                        .flatMap(chain::filter);
+```
+If markJobAsComplete returns void then, the chain terminates and does not go to next filter. So return String or something to keep chain going.
