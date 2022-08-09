@@ -27,6 +27,14 @@ spring:
             - PreFilter1
             - PreFilter2
             - PostFilter
+        - id: test
+          uri: localhost:9090
+          predicates:
+            - Path=/test/**
+          filters:
+            - name: TestConfigPropertiesFilter
+              args:
+                reCaptaEnable: true
 ---
 aws:
   accessKey: AKIATJQ37Q2WRFTNG6US
