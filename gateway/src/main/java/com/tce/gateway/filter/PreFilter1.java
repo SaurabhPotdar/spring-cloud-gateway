@@ -8,9 +8,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
-import java.nio.charset.StandardCharsets;
 
 import static com.tce.gateway.constants.Constants.LAMBDA_VO;
 
@@ -24,8 +21,6 @@ public class PreFilter1 extends AbstractGatewayFilterFactory<PreFilter1.Config> 
 
     @Autowired
     private Gson gson;
-
-    private static final String FUNCTION_NAME = "question";
 
     public PreFilter1() {
         super(PreFilter1.Config.class);
@@ -41,10 +36,11 @@ public class PreFilter1 extends AbstractGatewayFilterFactory<PreFilter1.Config> 
                 final LambdaVo lambdaVo = gson.fromJson(requestBody, LambdaVo.class);
                 log.info("RequestBody in PreFilter1 {}", lambdaVo);
                 exchange.getAttributes().put(LAMBDA_VO, lambdaVo);
-                return chain.filter(exchange);
+                throw new Exception();
+                //return chain.filter(exchange);
             } catch (Exception e) {
-                log.error("Error", e);
-                throw new RuntimeException(e);
+                log.error("Error {}", e.getMessage());
+                throw new RuntimeException(e.getMessage());
             }
         });
 

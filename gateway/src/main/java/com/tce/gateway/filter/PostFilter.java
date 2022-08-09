@@ -29,6 +29,7 @@ public class PostFilter extends AbstractGatewayFilterFactory<PostFilter.Config> 
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> chain.filter(exchange)
                 .then(Mono.fromRunnable(() -> {
+                    log.info("status code {}", exchange.getResponse().getRawStatusCode());
                     log.info("Post Filter executed");
                 }));
     }
