@@ -57,3 +57,15 @@ return jobService.markJobAsComplete(exchange)  //Webclient call
                         .flatMap(chain::filter);
 ```
 If markJobAsComplete returns void then, the chain terminates and does not go to next filter. So return String or something to keep chain going.
+
+## Writing large to disk using Gateway filter
+
+```java
+final File file = new File(tmpDir + "/Del/" + uuidUtil.getId(GatewayUUIDType.FILE) + ".json");
+file.getParentFile().mkdirs();  //Create directories if it does not exist.
+final AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), CREATE_NEW, WRITE);
+return DataBufferUtils.write(exchange.getRequest().getBody(), channel)
+        .map(DataBufferUtils::release)
+        .doOnComplete(() -> exchange.getAttributes().put(TEMP_FILENAME, file.getAbsolutePath()))
+        .then(chain.filter(exchange));  //For blocking without using block()
+```
